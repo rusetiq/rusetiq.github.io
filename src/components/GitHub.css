@@ -1,0 +1,168 @@
+.github {
+    background: var(--color-black);
+}
+
+.section-subtitle {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-gray);
+    letter-spacing: 0.05em;
+    margin-top: 0.75rem;
+    opacity: 0.6;
+}
+
+.github-card {
+    display: block;
+    position: relative;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.005) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+}
+
+.github-card:hover {
+    border-color: rgba(255, 107, 0, 0.25);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    text-decoration: none;
+}
+
+.github-card-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background: radial-gradient(ellipse at top center, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.github-card:hover .github-card-glow {
+    opacity: 1;
+}
+
+/* Web corner pattern - Spider-Man reference */
+.github-web-corner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    opacity: 0.03;
+    background:
+        repeating-conic-gradient(from 0deg at 100% 0%, transparent 0deg, rgba(255, 255, 255, 0.15) 4deg, transparent 8deg);
+}
+
+.github-card-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.github-avatar {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+}
+
+.avatar-ring {
+    position: absolute;
+    inset: -5px;
+    border: 1px dashed rgba(255, 107, 0, 0.25);
+    border-radius: 50%;
+}
+
+.avatar-inner {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-orange) 0%, var(--color-orange-dark) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-inner svg {
+    width: 40px;
+    height: 40px;
+    color: var(--color-white);
+}
+
+.github-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.github-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--color-orange);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.github-username {
+    font-family: var(--font-grotesk);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-white);
+    letter-spacing: -0.02em;
+}
+
+.github-desc {
+    font-family: var(--font-grotesk);
+    font-size: 0.9rem;
+    color: var(--color-gray);
+    margin-top: 0.25rem;
+}
+
+.github-arrow {
+    color: var(--color-orange);
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.github-card:hover .github-arrow {
+    opacity: 1;
+}
+
+/* Racing stripe */
+.github-stripe {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-orange) 0%, var(--color-red) 100%);
+    transform-origin: left;
+}
+
+@media (max-width: 768px) {
+    .github-card {
+        padding: 2rem;
+    }
+
+    .github-card-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .github-arrow {
+        display: none;
+    }
+
+    .github-web-corner {
+        display: none;
+    }
+}

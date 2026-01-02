@@ -1,0 +1,238 @@
+.projects {
+    background: linear-gradient(180deg, #0d0d0d 0%, #111111 50%, #0d0d0d 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Tougher background pattern */
+.section-bg-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        repeating-linear-gradient(45deg,
+            transparent,
+            transparent 100px,
+            rgba(255, 107, 0, 0.01) 100px,
+            rgba(255, 107, 0, 0.01) 101px);
+    pointer-events: none;
+}
+
+/* Vertical racing line through section */
+.section-racing-line {
+    position: absolute;
+    left: 5%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, transparent 0%, var(--color-orange) 20%, var(--color-orange) 80%, transparent 100%);
+    opacity: 0.08;
+}
+
+/* Floating icons for sections */
+.section-float-icon {
+    position: absolute;
+    opacity: 0.04;
+    color: var(--color-orange);
+    pointer-events: none;
+}
+
+.section-float-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.icon-speedometer {
+    top: 15%;
+    right: 8%;
+    width: 80px;
+    height: 80px;
+}
+
+.section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 5rem;
+}
+
+.section-index {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-orange);
+    opacity: 0.5;
+    margin-top: 0.5rem;
+}
+
+.section-subtitle {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-gray);
+    letter-spacing: 0.05em;
+    margin-top: 0.75rem;
+    opacity: 0.6;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.project-card {
+    position: relative;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.005) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.project-card:hover {
+    border-color: rgba(255, 107, 0, 0.3);
+    background: linear-gradient(135deg, rgba(255, 107, 0, 0.04) 0%, transparent 100%);
+}
+
+.project-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: radial-gradient(ellipse at top, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.project-card:hover .project-glow {
+    opacity: 1;
+}
+
+/* F1 position badge */
+.project-position {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-orange);
+    background: rgba(255, 107, 0, 0.1);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+}
+
+.position-icon {
+    width: 14px;
+    height: 14px;
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-right: 4rem;
+}
+
+.project-index {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--color-gray);
+}
+
+.project-tech {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: var(--color-orange);
+    padding: 0.35rem 0.7rem;
+    background: rgba(255, 107, 0, 0.06);
+    border: 1px solid rgba(255, 107, 0, 0.12);
+    border-radius: 100px;
+}
+
+.project-title {
+    font-family: var(--font-grotesk);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+    transition: color 0.2s ease;
+}
+
+.project-card:hover .project-title {
+    color: var(--color-orange);
+}
+
+.project-description {
+    font-family: var(--font-grotesk);
+    font-size: 0.9rem;
+    color: var(--color-gray);
+    line-height: 1.6;
+}
+
+.project-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.project-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--color-white);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.project-link:hover {
+    color: var(--color-orange);
+    text-decoration: none;
+}
+
+.project-link svg {
+    opacity: 0.6;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.project-link:hover svg {
+    opacity: 1;
+    transform: translate(2px, -2px);
+}
+
+/* Racing stripe at bottom */
+.project-stripe {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-orange) 0%, var(--color-red) 100%);
+    transform-origin: left;
+}
+
+@media (max-width: 800px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-racing-line,
+    .section-float-icon {
+        display: none;
+    }
+}
