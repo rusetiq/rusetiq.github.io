@@ -23,18 +23,6 @@ export default function Hero() {
             </div>
 
             <div className="relative z-10 container mx-auto px-4 md:px-12 flex flex-col items-start">
-
-                {/* Top Label */}
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="flex items-center gap-4 mb-4"
-                >
-                    <div className="w-4 h-4 bg-primary animate-pulse" />
-                    <span className="font-mono text-xs md:text-sm tracking-widest text-primary uppercase">System Status: Overloaded</span>
-                </motion.div>
-
                 {/* Main Headline */}
                 <motion.div
                     initial={{ y: 100, opacity: 0 }}
@@ -42,8 +30,8 @@ export default function Hero() {
                     transition={{ duration: 0.8, ease: "circOut" }}
                 >
                     <h1 className="text-[15vw] md:text-[11rem] font-display font-black leading-[0.85] tracking-tighter text-white mix-blend-exclusion break-words">
-                        RUSETIQ<span className="text-primary">.</span><br />
-                        <span className="italic font-serif text-transparent text-stroke hover:text-white transition-colors duration-300">AGENCY</span>
+                        AARUSH<br />
+                        <span className="italic font-serif text-transparent text-stroke hover:text-white transition-colors duration-300">DIWAKAR<span className="text-primary"></span></span>
                     </h1>
                 </motion.div>
 
@@ -56,9 +44,9 @@ export default function Hero() {
                         className="max-w-xl"
                     >
                         <p className="font-mono text-sm md:text-lg text-gray-400 border-l-2 border-primary pl-4 md:pl-6 py-2">
-                            WE BUILD <span className="bg-primary text-black px-1 font-bold">AI-FIRST</span> ECOSYSTEMS THAT SCREAM.
+                            BACKEND ENGINEERING. <span className="bg-primary text-black px-1 font-bold">CLEAN WEB.</span> EXPERIMENTAL AI.
                             <br />
-                            REJECT THE GENERIC. EMBRACE THE CHAOS.
+                            SQUEEZING MAXIMUM PERFORMANCE FROM MINIMAL HARDWARE.
                         </p>
                     </motion.div>
 
@@ -71,7 +59,7 @@ export default function Hero() {
                         className="group relative px-8 py-4 md:px-12 md:py-6 bg-black border-2 border-white hover:bg-primary hover:border-primary transition-all duration-300 w-full md:w-auto text-center"
                     >
                         <span className="relative z-10 font-heading font-black text-xl md:text-2xl uppercase text-white group-hover:text-black tracking-wide">
-                            Start Project -&gt;
+                            CONTACT ME -&gt;
                         </span>
                         {/* Brutalist Shadow */}
                         <div className="absolute top-2 left-2 w-full h-full bg-primary -z-10 group-hover:top-0 group-hover:left-0 transition-all duration-300" />
@@ -82,9 +70,9 @@ export default function Hero() {
             {/* Random Floating Elements */}
             <div className="absolute bottom-12 right-12 hidden md:block">
                 <div className="font-mono text-xs text-right space-y-1 text-primary">
-                    <p>COORD: 34.0522° N, 118.2437° W</p>
-                    <p>MEMORY: 64TB / 128TB</p>
-                    <p>UPTIME: 99.9999%</p>
+                    <p>COORD: 24.4512° N, 54.397° E</p>
+                    <p>LAST UPDATED: 12/02/2026</p>
+                    <p>MADE WITH 🩷 BY RUSETIQ</p>
                 </div>
             </div>
 

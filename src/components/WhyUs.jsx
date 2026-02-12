@@ -17,27 +17,26 @@ export default function WhyUs() {
                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-30 pointer-events-none" />
 
                     <div className="relative z-10">
-                        <h3 className="text-xl font-mono text-gray-500 mb-2 uppercase tracking-widest line-through decoration-red-600 decoration-2">Legacy Operations</h3>
+                        <h3 className="text-xl font-mono text-gray-500 mb-2 uppercase tracking-widest line-through decoration-red-600 decoration-2">VIBECODERS</h3>
                         <h2 className="text-5xl md:text-7xl font-black font-heading text-gray-400 mb-12 opacity-50 group-hover:opacity-100 transition-opacity">
-                            THE OLD<br />WORLD
+                            FRAMEWORK<br />BLOAT
                         </h2>
 
                         <ul className="space-y-6 font-mono text-gray-500">
                             <li className="flex items-center gap-4 group-hover:text-red-600 transition-colors">
-                                <span className="text-2xl">×</span> STATIC DELIVERABLES
+                                <span className="text-2xl">×</span> HEAVY DEPENDENCIES
                             </li>
                             <li className="flex items-center gap-4 group-hover:text-red-600 transition-colors">
-                                <span className="text-2xl">×</span> HUMAN BOTTLENECKS
+                                <span className="text-2xl">×</span> ABSTRACTION LAYERS
                             </li>
                             <li className="flex items-center gap-4 group-hover:text-red-600 transition-colors">
-                                <span className="text-2xl">×</span> 9-5 AVAILABILITY
+                                <span className="text-2xl">×</span> SLOW COLD STARTS
                             </li>
                         </ul>
                     </div>
 
                     <div className="mt-12 opacity-20">
                         <p className="font-mono text-xs text-justify break-all">
-                            ERROR_404_INNOVATION_NOT_FOUND_SYSTEM_FAILURE_RETRY_ABORT_FAIL_FAIL_FAIL_FAIL_FAIL
                         </p>
                     </div>
                 </div>
@@ -47,20 +46,20 @@ export default function WhyUs() {
                     <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out z-0" />
 
                     <div className="relative z-10">
-                        <h3 className="text-xl font-mono text-primary mb-2 uppercase tracking-widest group-hover:text-black">Next Gen Protocol</h3>
+                        <h3 className="text-xl font-mono text-primary mb-2 uppercase tracking-widest group-hover:text-black">The Config</h3>
                         <h2 className="text-5xl md:text-7xl font-black font-heading text-white mb-12 group-hover:text-black transition-colors">
-                            AI FIRST<br />SYSTEMS
+                            RAW<br />CODING
                         </h2>
 
                         <ul className="space-y-6 font-mono">
                             <li className="flex items-center gap-4 group-hover:text-black transition-colors">
-                                <span className="text-primary text-2xl group-hover:text-black">●</span> SELF-LEARNING
+                                <span className="text-primary text-2xl group-hover:text-black">●</span> THREAD OPTIMIZATION
                             </li>
                             <li className="flex items-center gap-4 group-hover:text-black transition-colors">
-                                <span className="text-primary text-2xl group-hover:text-black">●</span> AUTONOMOUS AGENTS
+                                <span className="text-primary text-2xl group-hover:text-black">●</span> NUMPY ONLY ML
                             </li>
                             <li className="flex items-center gap-4 group-hover:text-black transition-colors">
-                                <span className="text-primary text-2xl group-hover:text-black">●</span> INFINITE SCALE
+                                <span className="text-primary text-2xl group-hover:text-black">●</span> MINIMAL OVERHEAD
                             </li>
                         </ul>
                     </div>
@@ -69,7 +68,7 @@ export default function WhyUs() {
                         <div className="w-full h-2 bg-white/20 overflow-hidden relative">
                             <div className="absolute top-0 left-0 h-full w-full bg-primary group-hover:bg-black animate-progress-indeterminate" />
                         </div>
-                        <p className="font-mono text-xs mt-2 text-right">OPTIMIZATION: 100%</p>
+                        <p className="font-mono text-xs mt-2 text-right">EFFICIENCY: 100%</p>
                     </div>
                 </div>
 

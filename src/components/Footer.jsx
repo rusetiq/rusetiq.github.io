@@ -44,8 +44,7 @@ export default function Footer() {
                         aarush.uae@gmail.com
                     </a>
                     <div className="mt-8 flex flex-wrap gap-4">
-                        <a href="https://x.com/rusetiq" className="px-4 py-2 md:px-6 md:py-3 border border-white hover:bg-white hover:text-black transition-colors font-mono uppercase text-xs md:text-sm">Twitter_X</a>
-                        <a href="#" className="px-4 py-2 md:px-6 md:py-3 border border-white hover:bg-white hover:text-black transition-colors font-mono uppercase text-xs md:text-sm">LinkedIn</a>
+                        <a href="https://github.com/rusetiq" className="px-4 py-2 md:px-6 md:py-3 border border-white hover:bg-white hover:text-black transition-colors font-mono uppercase text-xs md:text-sm">GitHub</a>
                         <a href="https://instagram.com/rusetiq" className="px-4 py-2 md:px-6 md:py-3 border border-white hover:bg-white hover:text-black transition-colors font-mono uppercase text-xs md:text-sm">Instagram</a>
                     </div>
                 </div>
@@ -53,11 +52,10 @@ export default function Footer() {
                 {/* Info Right */}
                 <div className="flex flex-col justify-end items-end text-right">
                     <p className="text-8xl font-black font-heading text-primary opacity-20 select-none">
-                        RW/24
+                        RTQ/26
                     </p>
                     <p className="font-mono text-gray-500 max-w-sm mt-4">
-                        Rusetiq Agency defines the cutting edge of AI implementation.
-                        We don't follow trends; we engineer the systems that set them.
+                        Developer focused on backend engineering, clean web experiences, and experimental AI projects.
                     </p>
                 </div>
             </div>
@@ -71,7 +69,7 @@ export default function Footer() {
                 </div>
                 <div className="hidden md:block pb-2">
                     <p className="font-mono text-xs text-gray-600 uppercase">
-                        © {new Date().getFullYear()} Rusetiq Systems.<br />All Rights Reserved.
+                        © {new Date().getFullYear()} rusetiq<br />All Rights Reserved. (hopefully)
                     </p>
                 </div>
             </div>

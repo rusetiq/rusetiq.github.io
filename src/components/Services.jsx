@@ -2,33 +2,21 @@ import { motion } from 'framer-motion';
 
 const services = [
     {
-        title: "AI Full-Stack SaaS",
-        desc: "Next-gen applications powered by intelligent backends.",
-        className: "md:col-span-2 md:row-span-2 min-h-[400px]",
+        title: "Backend & APIs",
+        desc: "Flask, RESTful APIs, Gunicorn/Waitress. Worker & thread optimization for maximum performance.",
+        className: "md:col-span-2 min-h-[350px]",
         color: "bg-black border-2 border-white/20 hover:border-primary"
     },
     {
-        title: "AI Agents",
-        desc: "Autonomous worker bots that execute complex tasks 24/7.",
-        className: "md:col-span-1 min-h-[250px]",
+        title: "Experimental AI",
+        desc: "Building NumPy-only LLMs with continuous learning and persistent state tracking.",
+        className: "md:col-span-1 min-h-[350px]",
         color: "bg-black border-2 border-white/20 hover:border-primary"
     },
     {
-        title: "RAG Pipelines",
-        desc: "Retrieval-Augmented Generation for context-aware AI.",
-        className: "md:col-span-1 min-h-[250px]",
-        color: "bg-black border-2 border-white/20 hover:border-primary"
-    },
-    {
-        title: "Video Solutions",
-        desc: "Automated AI video generation and editing tools.",
-        className: "md:col-span-2 min-h-[250px]",
-        color: "bg-black border-2 border-white/20 hover:border-primary"
-    },
-    {
-        title: "n8n Workflows",
-        desc: "Advanced automation connecting your entire tech stack.",
-        className: "md:col-span-1 min-h-[250px]",
+        title: "Web Engineering",
+        desc: "Location-aware features, OCR + summarization pipelines, and clean data-driven interfaces.",
+        className: "md:col-span-3 min-h-[300px]",
         color: "bg-black border-2 border-white/20 hover:border-primary"
     }
 ];
@@ -61,7 +49,7 @@ export default function Services() {
                     viewport={{ once: true }}
                 >
                     <h2 className="text-5xl md:text-9xl font-black font-heading text-white mix-blend-difference mb-4">
-                        SERVICES
+                        WHAT DO I DO?
                     </h2>
                     <p className="font-mono text-primary text-sm md:text-xl uppercase tracking-widest flex items-center gap-2">
                         <span className="w-2 h-2 md:w-4 md:h-4 bg-primary inline-block" />
@@ -71,7 +59,7 @@ export default function Services() {
 
                 <div className="hidden md:block text-right">
                     <p className="font-mono text-xs text-gray-500">
-                        V.2.0.4<br />Build: RELEASE_CANDIDATE
+                        TBH<br />IDK
                     </p>
                 </div>
             </div>
@@ -106,7 +94,7 @@ export default function Services() {
 
                         <div className="relative z-10 border-t border-white/20 pt-6 mt-auto group-hover:border-black/20">
                             <p className="font-mono text-gray-400 text-sm group-hover:text-black/80 transition-colors">
-                                {service.desc} // <span className="font-bold underline">EXECUTE</span>
+                                {service.desc} <span className="font-bold underline"></span>
                             </p>
                         </div>
 
