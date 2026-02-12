@@ -17,7 +17,7 @@ export default function Hero() {
 
             {/* Background Marquee / Noise */}
             <div className="absolute top-1/4 -left-20 -rotate-12 opacity-10 whitespace-nowrap pointer-events-none select-none">
-                <h1 className="text-[20vw] font-black font-heading text-transparent text-stroke-orange leading-none">
+                <h1 className="text-[17vw] md:text-[20vw] font-black font-heading text-transparent text-stroke-orange leading-none">
                     MAXIMALIST CHAOS DESIGN SYSTEM
                 </h1>
             </div>
@@ -32,7 +32,7 @@ export default function Hero() {
                     className="flex items-center gap-4 mb-4"
                 >
                     <div className="w-4 h-4 bg-primary animate-pulse" />
-                    <span className="font-mono text-sm tracking-widest text-primary uppercase">System Status: Overloaded</span>
+                    <span className="font-mono text-xs md:text-sm tracking-widest text-primary uppercase">System Status: Overloaded</span>
                 </motion.div>
 
                 {/* Main Headline */}
@@ -41,21 +41,21 @@ export default function Hero() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.8, ease: "circOut" }}
                 >
-                    <h1 className="text-8xl md:text-[11rem] font-display font-black leading-[0.85] tracking-tighter text-white mix-blend-exclusion">
+                    <h1 className="text-[15vw] md:text-[11rem] font-display font-black leading-[0.85] tracking-tighter text-white mix-blend-exclusion break-words">
                         RUSETIQ<span className="text-primary">.</span><br />
                         <span className="italic font-serif text-transparent text-stroke hover:text-white transition-colors duration-300">AGENCY</span>
                     </h1>
                 </motion.div>
 
                 {/* Subheadline + CTA */}
-                <div className="mt-12 w-full flex flex-col md:flex-row justify-between items-end gap-12">
+                <div className="mt-8 md:mt-12 w-full flex flex-col md:flex-row justify-between items-start md:items-end gap-8 md:gap-12">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
                         className="max-w-xl"
                     >
-                        <p className="font-mono text-lg text-gray-400 border-l-2 border-primary pl-6 py-2">
+                        <p className="font-mono text-sm md:text-lg text-gray-400 border-l-2 border-primary pl-4 md:pl-6 py-2">
                             WE BUILD <span className="bg-primary text-black px-1 font-bold">AI-FIRST</span> ECOSYSTEMS THAT SCREAM.
                             <br />
                             REJECT THE GENERIC. EMBRACE THE CHAOS.
@@ -68,10 +68,10 @@ export default function Hero() {
                         animate={{ scale: 1, opacity: 1 }}
                         whileHover={{ scale: 1.05 }}
                         transition={{ delay: 0.6 }}
-                        className="group relative px-12 py-6 bg-black border-2 border-white hover:bg-primary hover:border-primary transition-all duration-300"
+                        className="group relative px-8 py-4 md:px-12 md:py-6 bg-black border-2 border-white hover:bg-primary hover:border-primary transition-all duration-300 w-full md:w-auto text-center"
                     >
-                        <span className="relative z-10 font-heading font-black text-2xl uppercase text-white group-hover:text-black tracking-wide">
-                            Start Project ->
+                        <span className="relative z-10 font-heading font-black text-xl md:text-2xl uppercase text-white group-hover:text-black tracking-wide">
+                            Start Project -&gt;
                         </span>
                         {/* Brutalist Shadow */}
                         <div className="absolute top-2 left-2 w-full h-full bg-primary -z-10 group-hover:top-0 group-hover:left-0 transition-all duration-300" />

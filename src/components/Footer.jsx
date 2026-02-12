@@ -27,7 +27,7 @@ export default function Footer() {
                         animate="animate"
                     >
                         {[...Array(8)].map((_, i) => (
-                            <span key={i} className="text-8xl md:text-[10rem] font-black font-heading text-black uppercase leading-none px-4">
+                            <span key={i} className="text-6xl md:text-[10rem] font-black font-heading text-black uppercase leading-none px-4">
                                 LET'S BUILD THE FUTURE —
                             </span>
                         ))}
@@ -39,14 +39,14 @@ export default function Footer() {
 
                 {/* Contact Left */}
                 <div>
-                    <h3 className="text-sm font-mono text-gray-500 mb-8 uppercase tracking-widest border-b border-gray-800 pb-2">Initiate Contact</h3>
-                    <a href="mailto:aarush.uae@gmail.com" className="block text-4xl md:text-6xl font-bold font-heading hover:text-primary transition-colors break-words">
+                    <h3 className="text-xs md:text-sm font-mono text-gray-500 mb-4 md:mb-8 uppercase tracking-widest border-b border-gray-800 pb-2">Initiate Contact</h3>
+                    <a href="mailto:aarush.uae@gmail.com" className="block text-3xl md:text-6xl font-bold font-heading hover:text-primary transition-colors break-words">
                         aarush.uae@gmail.com
                     </a>
-                    <div className="mt-8 flex gap-4">
-                        <a href="#" className="px-6 py-3 border border-white hover:bg-white hover:text-black transition-colors font-mono uppercase text-sm">Twitter_X</a>
-                        <a href="#" className="px-6 py-3 border border-white hover:bg-white hover:text-black transition-colors font-mono uppercase text-sm">LinkedIn</a>
-                        <a href="https://instagram.com/rusetiq" className="px-6 py-3 border border-white hover:bg-white hover:text-black transition-colors font-mono uppercase text-sm">Instagram</a>
+                    <div className="mt-8 flex flex-wrap gap-4">
+                        <a href="https://x.com/rusetiq" className="px-4 py-2 md:px-6 md:py-3 border border-white hover:bg-white hover:text-black transition-colors font-mono uppercase text-xs md:text-sm">Twitter_X</a>
+                        <a href="#" className="px-4 py-2 md:px-6 md:py-3 border border-white hover:bg-white hover:text-black transition-colors font-mono uppercase text-xs md:text-sm">LinkedIn</a>
+                        <a href="https://instagram.com/rusetiq" className="px-4 py-2 md:px-6 md:py-3 border border-white hover:bg-white hover:text-black transition-colors font-mono uppercase text-xs md:text-sm">Instagram</a>
                     </div>
                 </div>
 

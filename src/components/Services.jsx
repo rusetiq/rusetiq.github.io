@@ -53,18 +53,18 @@ export default function Services() {
         <section className="relative z-10 py-32 px-4 md:px-12 bg-black border-t-2 border-white">
 
             {/* Header */}
-            <div className="mb-24 flex flex-col md:flex-row justify-between items-end border-b-2 border-white pb-8">
+            <div className="mb-12 md:mb-24 flex flex-col md:flex-row justify-between items-start md:items-end border-b-2 border-white pb-8">
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
                     viewport={{ once: true }}
                 >
-                    <h2 className="text-6xl md:text-9xl font-black font-heading text-white mix-blend-difference mb-4">
+                    <h2 className="text-5xl md:text-9xl font-black font-heading text-white mix-blend-difference mb-4">
                         SERVICES
                     </h2>
-                    <p className="font-mono text-primary text-xl uppercase tracking-widest flex items-center gap-2">
-                        <span className="w-4 h-4 bg-primary inline-block" />
+                    <p className="font-mono text-primary text-sm md:text-xl uppercase tracking-widest flex items-center gap-2">
+                        <span className="w-2 h-2 md:w-4 md:h-4 bg-primary inline-block" />
                         Deploying Intelligence
                     </p>
                 </motion.div>
@@ -82,7 +82,7 @@ export default function Services() {
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true, margin: "-100px" }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-8 auto-rows-fr"
+                className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 auto-rows-fr"
             >
                 {services.map((service, index) => (
                     <motion.div
