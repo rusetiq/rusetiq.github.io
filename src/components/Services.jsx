@@ -1,107 +1,110 @@
-import { motion } from 'framer-motion';
+import { useRef, useEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import './Services.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const services = [
     {
-        title: "Backend & APIs",
-        desc: "Flask, RESTful APIs, Gunicorn/Waitress. Worker & thread optimization for maximum performance.",
-        className: "md:col-span-2 min-h-[350px]",
-        color: "bg-black border-2 border-white/20 hover:border-primary"
+        num: '01',
+        title: 'Backend & APIs',
+        desc: 'Flask, Django, RESTful APIs, Gunicorn. Worker & thread optimization — getting the most out of every millisecond.',
     },
     {
-        title: "Experimental AI",
-        desc: "Building NumPy-only LLMs with continuous learning and persistent state tracking.",
-        className: "md:col-span-1 min-h-[350px]",
-        color: "bg-black border-2 border-white/20 hover:border-primary"
+        num: '02',
+        title: 'Experimental AI',
+        desc: 'NumPy-only LLMs with continuous learning and persistent state tracking. No frameworks, just pure math.',
     },
     {
-        title: "Web Engineering",
-        desc: "Location-aware features, OCR + summarization pipelines, and clean data-driven interfaces.",
-        className: "md:col-span-3 min-h-[300px]",
-        color: "bg-black border-2 border-white/20 hover:border-primary"
-    }
+        num: '03',
+        title: 'Web Engineering',
+        desc: 'Location-aware features, OCR pipelines, and clean data-driven interfaces built on React and Node.',
+    },
 ];
 
-const container = {
-    hidden: { opacity: 0 },
-    show: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.1
-        }
-    }
-};
-
-const item = {
-    hidden: { opacity: 0, y: 50 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "circOut" } }
-};
+const PaisleyMotif = () => (
+    <svg className="paisley-motif" viewBox="0 0 80 80" fill="none">
+        <ellipse cx="40" cy="55" rx="16" ry="28" stroke="#E8622A" strokeWidth="0.5" fill="rgba(232,98,42,0.03)" />
+        <ellipse cx="40" cy="48" rx="8" ry="14" stroke="#C9922A" strokeWidth="0.5" fill="rgba(201,146,42,0.04)" />
+        <circle cx="40" cy="30" r="4" stroke="#E8622A" strokeWidth="0.5" fill="rgba(232,98,42,0.06)" />
+        <path d="M40 26 Q48 18 56 24 Q60 30 54 36 Q48 40 40 34" stroke="#C9922A" strokeWidth="0.4" fill="none" />
+    </svg>
+);
 
 export default function Services() {
+    const sectionRef = useRef(null);
+
+    useEffect(() => {
+        const section = sectionRef.current;
+        if (!section) return;
+
+        const ctx = gsap.context(() => {
+            const header = section.querySelector('.services-header');
+            if (header) {
+                gsap.fromTo(header,
+                    { y: 50, opacity: 0 },
+                    {
+                        y: 0, opacity: 1,
+                        duration: 0.9, ease: 'power3.out',
+                        scrollTrigger: { trigger: header, start: 'top 85%', toggleActions: 'play none none none' },
+                    }
+                );
+            }
+
+            const rows = section.querySelectorAll('.service-row');
+            rows.forEach((row, i) => {
+                gsap.fromTo(row,
+                    { x: i % 2 === 0 ? -50 : 50, opacity: 0 },
+                    {
+                        x: 0, opacity: 1,
+                        duration: 0.85, ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: row,
+                            start: 'top 87%',
+                            toggleActions: 'play none none none',
+                        },
+                    }
+                );
+            });
+        });
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section className="relative z-10 py-32 px-4 md:px-12 bg-black border-t-2 border-white">
+        <section id="services" ref={sectionRef} className="services-section">
+            <div className="services-container">
+                <div className="services-header">
+                    <div className="services-header-left">
+                        <div className="section-label">
+                            <span className="section-number">03</span>
+                            <span className="section-title-tag">Services</span>
+                        </div>
+                        <h2 className="services-heading">
+                            What I<br /><em>do best</em>
+                        </h2>
+                    </div>
+                    <PaisleyMotif />
+                </div>
 
-            {/* Header */}
-            <div className="mb-12 md:mb-24 flex flex-col md:flex-row justify-between items-start md:items-end border-b-2 border-white pb-8">
-                <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                >
-                    <h2 className="text-5xl md:text-9xl font-black font-heading text-white mix-blend-difference mb-4">
-                        WHAT DO I DO?
-                    </h2>
-                    <p className="font-mono text-primary text-sm md:text-xl uppercase tracking-widest flex items-center gap-2">
-                        <span className="w-2 h-2 md:w-4 md:h-4 bg-primary inline-block" />
-                        Deploying Intelligence
-                    </p>
-                </motion.div>
+                <div className="services-ornament-line" aria-hidden="true" />
 
-                <div className="hidden md:block text-right">
-                    <p className="font-mono text-xs text-gray-500">
-                        TBH<br />IDK
-                    </p>
+                <div className="services-list">
+                    {services.map((service, i) => (
+                        <div key={i} className="service-row">
+                            <span className="service-num">{service.num}</span>
+                            <div className="service-body">
+                                <h3 className="service-title">{service.title}</h3>
+                                <p className="service-desc">{service.desc}</p>
+                            </div>
+                            <svg className="service-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                                <path d="M7 17L17 7M17 7H7M17 7V17" />
+                            </svg>
+                        </div>
+                    ))}
                 </div>
             </div>
-
-            {/* Grid */}
-            <motion.div
-                variants={container}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, margin: "-100px" }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 auto-rows-fr"
-            >
-                {services.map((service, index) => (
-                    <motion.div
-                        key={index}
-                        variants={item}
-                        whileHover={{ scale: 0.98, transition: { duration: 0.1 } }}
-                        className={`relative p-8 flex flex-col justify-between group overflow-hidden transition-all duration-300 ${service.color}`}
-                    >
-                        {/* Hover Overlay */}
-                        <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out z-0" />
-
-                        <div className="relative z-10">
-                            <div className="text-right mb-12 opacity-50 font-mono text-xs group-hover:text-black">
-                                {`0${index + 1}`}
-                            </div>
-
-                            <h3 className="text-4xl md:text-5xl font-display font-bold text-white mb-4 group-hover:text-black transition-colors uppercase leading-none">
-                                {service.title}
-                            </h3>
-                        </div>
-
-                        <div className="relative z-10 border-t border-white/20 pt-6 mt-auto group-hover:border-black/20">
-                            <p className="font-mono text-gray-400 text-sm group-hover:text-black/80 transition-colors">
-                                {service.desc} <span className="font-bold underline"></span>
-                            </p>
-                        </div>
-
-                    </motion.div>
-                ))}
-            </motion.div>
-
         </section>
     );
 }

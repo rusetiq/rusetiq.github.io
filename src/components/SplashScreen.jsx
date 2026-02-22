@@ -3,128 +3,91 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './SplashScreen.css';
 
 export default function SplashScreen({ onComplete }) {
-    const [isVisible, setIsVisible] = useState(true);
+    const [visible, setVisible] = useState(true);
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setProgress(p => {
-                if (p >= 100) {
-                    clearInterval(interval);
-                    return 100;
-                }
+                if (p >= 100) { clearInterval(interval); return 100; }
                 return p + 2;
             });
         }, 40);
 
         const timer = setTimeout(() => {
-            setIsVisible(false);
-            setTimeout(onComplete, 1000);
-        }, 2200);
+            setVisible(false);
+            setTimeout(onComplete, 900);
+        }, 2300);
 
-        return () => {
-            clearTimeout(timer);
-            clearInterval(interval);
-        };
+        return () => { clearTimeout(timer); clearInterval(interval); };
     }, [onComplete]);
 
     return (
         <AnimatePresence>
-            {isVisible && (
+            {visible && (
                 <motion.div
-                    className="splash-screen"
+                    className="splash"
                     initial={{ opacity: 1 }}
-                    exit={{
-                        opacity: 0,
-                        scale: 1.1,
-                        filter: 'blur(20px)',
-                        transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] }
-                    }}
+                    exit={{ opacity: 0, scale: 1.05, filter: 'blur(14px)', transition: { duration: 0.7 } }}
                 >
-                    {/* Animated background gradient */}
-                    <motion.div
-                        className="splash-bg-gradient"
-                        animate={{
-                            rotate: [0, 360],
-                        }}
-                        transition={{
-                            duration: 20,
-                            repeat: Infinity,
-                            ease: "linear"
-                        }}
-                    />
+                    <div className="splash-bg" />
 
                     <motion.div
                         className="splash-content"
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                     >
-                        {/* Logo */}
-                        <motion.div
-                            className="splash-logo"
-                            initial={{ y: 30, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.2, duration: 0.6 }}
-                        >
-                            <div className="logo-container">
-                                <motion.div
-                                    className="logo-ring"
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                                />
-                                <img
-                                    src="/logo.png"
-                                    alt="Rusetiq Logo"
-                                    className="logo-image"
-                                />
+                        <div className="splash-mandala">
+                            <div className="mandala-wrap">
+                                <div className="mandala-ring ring-1" />
+                                <div className="mandala-ring ring-2" />
+                                <div className="mandala-ring ring-3" />
+                                <svg className="mandala-svg" width="120" height="120" viewBox="0 0 120 120" fill="none">
+                                    <circle cx="60" cy="60" r="20" stroke="#C9922A" strokeWidth="0.5" fill="none" />
+                                    {[0, 45, 90, 135, 180, 225, 270, 315].map((a, i) => (
+                                        <line key={i}
+                                            x1={60 + 20 * Math.cos(a * Math.PI / 180)}
+                                            y1={60 + 20 * Math.sin(a * Math.PI / 180)}
+                                            x2={60 + 28 * Math.cos(a * Math.PI / 180)}
+                                            y2={60 + 28 * Math.sin(a * Math.PI / 180)}
+                                            stroke="#E8622A" strokeWidth="0.5" />
+                                    ))}
+                                    <circle cx="60" cy="60" r="6" stroke="#E8622A" strokeWidth="0.7" fill="rgba(232,98,42,0.12)" />
+                                    <circle cx="60" cy="60" r="2" fill="#E8622A" />
+                                </svg>
                             </div>
-                        </motion.div>
+                        </div>
 
                         <motion.h1
-                            className="splash-title"
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.4, duration: 0.6 }}
+                            className="splash-name"
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3, duration: 0.6 }}
                         >
-                            RUSETIQ
+                            rusetiq
                         </motion.h1>
 
                         <motion.p
-                            className="splash-subtitle"
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.5, duration: 0.6 }}
+                            className="splash-sub"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.45 }}
                         >
-                            PORTFOLIO
+                            Portfolio
                         </motion.p>
 
                         <motion.div
-                            className="splash-loader-container"
+                            className="splash-bar-wrap"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 0.6 }}
+                            transition={{ delay: 0.55 }}
                         >
-                            <div className="splash-loader-bg" />
-                            <motion.div
-                                className="splash-loader-fill"
-                                style={{ width: `${progress}%` }}
-                            />
-                            <span className="splash-loader-text">{progress}%</span>
+                            <div className="splash-bar-bg">
+                                <div className="splash-bar-fill" style={{ width: `${progress}%` }} />
+                            </div>
                         </motion.div>
                     </motion.div>
-
-                    {/* Corner decorations */}
-                    <div className="corner-decoration corner-tl">
-                        <div className="corner-line corner-line-h" />
-                        <div className="corner-line corner-line-v" />
-                        <div className="corner-dot" />
-                    </div>
-                    <div className="corner-decoration corner-br">
-                        <div className="corner-line corner-line-h" />
-                        <div className="corner-line corner-line-v" />
-                        <div className="corner-dot" />
-                    </div>
                 </motion.div>
             )}
         </AnimatePresence>
