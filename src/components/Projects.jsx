@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Projects.css';
@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
     {
-        id: 1,
+        id: 2,
         title: 'DANAI',
         description: 'Interactive React application with modern design and smooth animations.',
         tech: ['React'],
@@ -15,7 +15,7 @@ const projects = [
         githubUrl: 'https://github.com/rusetiq/danai/',
     },
     {
-        id: 2,
+        id: 1,
         title: 'NAFIRA',
         description: 'Full-stack application with React frontend and Node.js backend.',
         tech: ['React', 'Node.js'],
@@ -32,27 +32,33 @@ const projects = [
     },
     {
         id: 4,
-        title: 'DISHKPLATFORM',
-        description: 'Comprehensive platform developed using the Django framework.',
-        tech: ['Django'],
+        title: 'RTQCODE',
+        description: 'AI coding assistant in your terminal, built with python.',
+        tech: ['Python', 'AI'],
         liveUrl: null,
-        githubUrl: 'https://github.com/rusetiq/dishkplatform/',
+        githubUrl: 'https://github.com/rusetiq/rtqcode/',
     },
 ];
 
 export default function Projects() {
     const sectionRef = useRef(null);
     const pinWrapRef = useRef(null);
-    const trackRef = useRef(null);
+    const cardRefs = useRef([]);
+    const [activeIndex, setActiveIndex] = useState(0);
 
     useEffect(() => {
         const section = sectionRef.current;
         const pinWrap = pinWrapRef.current;
-        const track = trackRef.current;
-        if (!section || !pinWrap || !track) return;
+        if (!section || !pinWrap) return;
 
         const isMobile = window.innerWidth <= 768;
-        if (isMobile) return;
+        if (isMobile) {
+            cardRefs.current.forEach(c => c && c.classList.add('is-active'));
+            return;
+        }
+
+        const total = projects.length;
+        const stepSize = window.innerHeight * 0.85;
 
         const ctx = gsap.context(() => {
             const introEls = section.querySelectorAll('.gsap-up');
@@ -70,21 +76,32 @@ export default function Projects() {
                 }
             );
 
-            const totalWidth = track.scrollWidth - pinWrap.offsetWidth;
+            ScrollTrigger.create({
+                trigger: pinWrap,
+                start: 'top top',
+                end: () => `+=${stepSize * total}`,
+                pin: true,
+                anticipatePin: 1,
+                scrub: false,
+                onUpdate: (self) => {
+                    const raw = self.progress * total;
+                    const idx = Math.min(Math.floor(raw + 0.15), total - 1);
+                    setActiveIndex(idx);
 
-            gsap.to(track, {
-                x: -totalWidth,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: pinWrap,
-                    start: 'top top',
-                    end: () => `+=${totalWidth + window.innerWidth * 0.4}`,
-                    scrub: 1.2,
-                    pin: true,
-                    anticipatePin: 1,
-                    invalidateOnRefresh: true,
+                    cardRefs.current.forEach((card, i) => {
+                        if (!card) return;
+                        if (i === idx) {
+                            card.classList.add('is-active');
+                        } else {
+                            card.classList.remove('is-active');
+                        }
+                    });
                 },
             });
+
+            if (cardRefs.current[0]) {
+                cardRefs.current[0].classList.add('is-active');
+            }
         });
 
         return () => ctx.revert();
@@ -103,19 +120,24 @@ export default function Projects() {
             </div>
 
             <div ref={pinWrapRef} className="projects-pin-wrap">
-                <div ref={trackRef} className="projects-track">
-                    {projects.map((project) => (
-                        <article key={project.id} className="project-card">
+                <div className="projects-track">
+                    {projects.map((project, i) => (
+                        <article
+                            key={project.id}
+                            ref={el => cardRefs.current[i] = el}
+                            className="project-card"
+                        >
                             <div className="project-card-top">
-                                <span className="project-index">0{project.id}</span>
                                 <div className="project-tech-row">
                                     {project.tech.map(t => (
                                         <span key={t} className="project-tech-tag">{t}</span>
                                     ))}
                                 </div>
+                                <span className="project-index">0{project.id}</span>
                             </div>
 
                             <h3 className="project-title">{project.title}</h3>
+                            <div className="project-title-rule" aria-hidden="true" />
                             <p className="project-desc">{project.description}</p>
 
                             <div className="project-card-footer">
@@ -137,6 +159,15 @@ export default function Projects() {
 
                             <div className="project-card-accent" aria-hidden="true" />
                         </article>
+                    ))}
+                </div>
+
+                <div className="projects-counter" aria-hidden="true">
+                    {projects.map((_, i) => (
+                        <div
+                            key={i}
+                            className={`projects-counter-dot${i === activeIndex ? ' active' : ''}`}
+                        />
                     ))}
                 </div>
             </div>

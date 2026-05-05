@@ -87,6 +87,8 @@ export default function Footer() {
                         <a href="https://github.com/rusetiq" target="_blank" rel="noopener noreferrer" className="footer-link">GitHub</a>
                         <span className="footer-link-sep">·</span>
                         <a href="https://instagram.com/rusetiq" target="_blank" rel="noopener noreferrer" className="footer-link">Instagram</a>
+                        <span className="footer-link-sep">·</span>
+                        <a href="/reports/index.html" className="footer-link">Reports</a>
                     </div>
                 </div>
 
