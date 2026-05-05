@@ -24,10 +24,10 @@ float snoise(vec2 v) {
   vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
   vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.0);
   m = m * m * m * m;
-  vec3 x = 2.0 * fract(p * C.www) - 1.0;
-  vec3 h = abs(x) - 0.5;
-  vec3 ox = floor(x + 0.5);
-  vec3 a0 = x - ox;
+  vec3 x2 = 2.0 * fract(p * C.www) - 1.0;
+  vec3 h = abs(x2) - 0.5;
+  vec3 ox = floor(x2 + 0.5);
+  vec3 a0 = x2 - ox;
   m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);
   vec3 g;
   g.x  = a0.x  * x0.x  + h.x  * x0.y;
@@ -35,17 +35,24 @@ float snoise(vec2 v) {
   return 130.0 * dot(m, g);
 }
 
-float fbm(vec2 p, int octaves) {
-  float val = 0.0;
-  float amp = 0.5;
-  float freq = 1.0;
-  for (int i = 0; i < 6; i++) {
-    if (i >= octaves) break;
-    val += amp * snoise(p * freq);
-    amp *= 0.5;
-    freq *= 2.1;
-  }
-  return val;
+float ridge(float n, float offset) {
+    n = offset - abs(n);
+    return n * n;
+}
+
+float ridgedFbm(vec2 p, float t) {
+    float val = 0.0;
+    float amp = 0.5;
+    float freq = 1.0;
+    float prev = 1.0;
+    for (int i = 0; i < 5; i++) {
+        float n = ridge(snoise(p * freq + t * (0.3 + float(i) * 0.07)), 0.9);
+        val += n * amp * prev;
+        prev = n;
+        amp *= 0.55;
+        freq *= 2.1;
+    }
+    return val;
 }
 
 void main() {
@@ -57,41 +64,42 @@ void main() {
 
     float dist = distance(st, mouse);
     vec2 dir = normalize(st - mouse + vec2(0.001));
-    float repel = smoothstep(0.55, 0.0, dist);
-    st -= dir * repel * 0.08;
+    float repel = smoothstep(0.5, 0.0, dist);
+    st -= dir * repel * 0.06;
 
-    float t = u_time * 0.055;
+    float t = u_time * 0.09;
 
-    vec2 domain = st * 2.2;
+    vec2 q;
+    q.x = snoise(st * 1.4 + vec2(0.0, t));
+    q.y = snoise(st * 1.4 + vec2(3.1, t));
 
-    float warp1 = fbm(domain + vec2(t * 0.7, t * 0.3), 4);
-    float warp2 = fbm(domain + vec2(warp1 * 0.9, warp1 * 1.2) + vec2(5.1, 3.7) + t * 0.2, 4);
+    vec2 warped = st + q * 0.35;
 
-    float base = fbm(domain + vec2(warp2 * 1.1, warp2 * 0.8) + t * 0.15, 5);
+    float veins = ridgedFbm(warped * 1.8, t);
+    float veins2 = ridgedFbm(warped * 0.9 + vec2(4.4, 2.1), t * 0.6);
+    float combined = veins * 0.7 + veins2 * 0.3;
 
-    base = base * 0.5 + 0.5;
+    vec3 rock     = vec3(0.020, 0.010, 0.004);
+    vec3 darkRock = vec3(0.040, 0.020, 0.007);
+    vec3 lava1    = vec3(0.90,  0.28,  0.04);
+    vec3 lava2    = vec3(0.98,  0.52,  0.08);
+    vec3 core     = vec3(1.00,  0.82,  0.30);
 
-    vec3 void0  = vec3(0.018, 0.009, 0.003);
-    vec3 void1  = vec3(0.035, 0.018, 0.006);
-    vec3 ember  = vec3(0.72,  0.20,  0.04);
-    vec3 copper = vec3(0.62,  0.38,  0.08);
-    vec3 gold   = vec3(0.80,  0.58,  0.12);
+    vec3 color = mix(rock, darkRock, smoothstep(0.0, 0.4, combined));
 
-    vec3 color = mix(void0, void1, smoothstep(0.0, 0.55, base));
+    float veinGlow = smoothstep(0.42, 0.62, combined);
+    color = mix(color, lava1 * 0.6, veinGlow * 0.85);
 
-    float emberBand = smoothstep(0.55, 0.68, base) * (1.0 - smoothstep(0.68, 0.76, base));
-    color = mix(color, ember * 0.55, emberBand * 1.1);
+    float hotVein = smoothstep(0.62, 0.78, combined);
+    color = mix(color, lava2 * 0.7, hotVein * 0.9);
 
-    float copperBand = smoothstep(0.76, 0.85, base) * (1.0 - smoothstep(0.85, 0.92, base));
-    color = mix(color, copper * 0.4, copperBand * 0.8);
+    float coreGlow = smoothstep(0.78, 0.88, combined);
+    color = mix(color, core * 0.55, coreGlow * 0.8);
 
-    float goldEdge = smoothstep(0.92, 0.96, base);
-    color = mix(color, gold * 0.35, goldEdge * 0.7);
+    float mouseGlow = smoothstep(0.28, 0.0, dist) * 0.22;
+    color += lava1 * mouseGlow;
 
-    float mouseHalo = smoothstep(0.3, 0.0, dist) * 0.18;
-    color += ember * mouseHalo;
-
-    float grain = snoise(st * 320.0 + t * 3.0) * 0.025;
+    float grain = snoise(st * 380.0 + t * 5.0) * 0.018;
     color += grain;
 
     gl_FragColor = vec4(clamp(color, 0.0, 1.0), 1.0);
@@ -123,7 +131,10 @@ const GradientMesh = () => {
     const uniforms = useMemo(() => ({
         u_time: { value: 0 },
         u_mouse: { value: new Vector2(0, 0) },
-        u_resolution: { value: new Vector2(window.innerWidth * (window.devicePixelRatio || 1), window.innerHeight * (window.devicePixelRatio || 1)) }
+        u_resolution: { value: new Vector2(
+            window.innerWidth * (window.devicePixelRatio || 1),
+            window.innerHeight * (window.devicePixelRatio || 1)
+        ) }
     }), []);
 
     useFrame(({ clock }) => {
@@ -145,7 +156,7 @@ const GradientMesh = () => {
 
 export default function BackgroundShader() {
     return (
-        <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none', background: '#0a0301' }}>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none', background: '#0a0200' }}>
             <Canvas camera={{ position: [0, 0, 1] }} resize={{ scroll: false }}>
                 <GradientMesh />
             </Canvas>
