@@ -7,23 +7,15 @@ gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
     {
-        id: 2,
-        title: 'DANAI',
-        description: 'Interactive React application with modern design and smooth animations.',
-        tech: ['React'],
-        liveUrl: 'https://rusetiq.github.io/danai/',
-        githubUrl: 'https://github.com/rusetiq/danai/',
-    },
-    {
         id: 1,
-        title: 'NAFIRA',
-        description: 'Full-stack application with React frontend and Node.js backend.',
-        tech: ['React', 'Node.js'],
-        liveUrl: 'https://nafira.vercel.app/',
-        githubUrl: 'https://github.com/rusetiq/nafira/',
+        title: 'DISHKV2',
+        description: 'Real-time, interactive LeetCode-style hackathon platform built with Python and Django.',
+        tech: ['Python', 'Django'],
+        liveUrl: null,
+        githubUrl: 'https://github.com/rusetiq/dishkv2',
     },
     {
-        id: 3,
+        id: 2,
         title: 'RTQOS',
         description: 'Custom operating system built from scratch with a GUI and working kernel.',
         tech: ['C', 'Assembly'],
@@ -31,12 +23,20 @@ const projects = [
         githubUrl: 'https://github.com/rusetiq/rtqos/',
     },
     {
-        id: 4,
+        id: 3,
         title: 'RTQCODE',
         description: 'AI coding assistant in your terminal, built with python.',
         tech: ['Python', 'AI'],
         liveUrl: null,
         githubUrl: 'https://github.com/rusetiq/rtqcode/',
+    },
+    {
+        id: 4,
+        title: 'NAFIRA',
+        description: 'Full-stack application with React frontend and Node.js backend.',
+        tech: ['React', 'Node.js'],
+        liveUrl: 'https://nafira.vercel.app/',
+        githubUrl: 'https://github.com/rusetiq/nafira/',
     },
 ];
 
