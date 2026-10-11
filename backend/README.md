@@ -33,3 +33,11 @@ npx wrangler deploy --config backend/wrangler.jsonc
 The static portfolio is published independently to GitHub Pages and Sites. Run `node scripts/sync-static.mjs` after changing HTML, CSS or JavaScript. It creates content-versioned assets and synchronizes the Pages root.
 
 For moderation, inspect records with `npx wrangler d1 execute rusetiq-guestbook --config backend/wrangler.jsonc --remote --command "SELECT id,name,message FROM signatures ORDER BY created_at DESC LIMIT 20"`, then remove only an identified record when needed. There is no public administrator route.
+
+## portfolio additions
+
+`GET /repos` returns all public repositories (paginated upstream). `GET /readme` returns the rendered profile README, which the client sanitizes with a tag and URL allowlist. Verified public snapshots in `dist/data/` are available if GitHub is temporarily unavailable. `GET /github-day?date=YYYY-MM-DD` reads the public activity timeline for that exact day, including older dates. Private contribution details are never requested or inferred. These routes cache public data for one hour.
+
+Pixel art uses the existing guestbook table and deletion receipts. A drawing can contain either bounded signature strokes, a typed signature, or an 8/16/24/32-square grid with up to 24 hex colors and one palette index per cell. No schema migration is needed. The client supports brush, eraser, flood fill, undo, redo, keyboard painting, and a voxel preview. Signature and pixel cards open in a replay dialog.
+
+The share-card source is `scripts/share-card.html`. Serve the project root to render it at 1200×630; the published bitmap is `dist/assets/orbit-card.png`. It uses the same procedural planet art as the homepage.

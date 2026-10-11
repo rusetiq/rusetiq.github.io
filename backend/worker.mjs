@@ -1,6 +1,7 @@
 const ALLOWED = new Set(['https://rusetiq.dev','https://www.rusetiq.dev','https://rusetiq.github.io','https://quiet-portfolio-1010.rusetiq.chatgpt.site','http://127.0.0.1:4173','http://localhost:4173']);
+import {githubData} from './github.mjs';
 import {getContributions} from './contributions.mjs';
-const INKS = new Set(['#e0dfd5','#b6c5a5','#c9b88d']);
+const INKS = new Set(['#e0dfd5','#b6c5a5','#c9b88d','#b9d7ee','#e9bd9d']);
 const encoder = new TextEncoder();
 async function hash(value) { return [...new Uint8Array(await crypto.subtle.digest('SHA-256',encoder.encode(value)))].map(x=>x.toString(16).padStart(2,'0')).join(''); }
 function response(data,status,origin) { return new Response(JSON.stringify(data), {status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Access-Control-Allow-Origin':origin||'https://rusetiq.dev','Vary':'Origin'}}); }
@@ -11,7 +12,11 @@ export function validateEntry(data) {
   if (!name || name.length>32 || message.length>120) throw new Error('a name (up to 32 characters) and a short note, please.');
   if (!INKS.has(data.ink)) throw new Error('choose an ink color.');
   let drawing;
-  if (typeof data.drawing?.typed==='string') {
+  if (data.drawing?.pixels) {
+    const {size,palette,cells}=data.drawing.pixels;
+    if(![8,16,24,32].includes(size)||!Array.isArray(palette)||!palette.length||palette.length>24||palette.some(c=>typeof c!=='string'||!/^#[0-9a-f]{6}$/i.test(c))||!Array.isArray(cells)||cells.length!==size*size||cells.some(c=>!Number.isInteger(c)||c< -1||c>=palette.length)||!cells.some(c=>c>=0))throw new Error('add some pixels to the canvas.');
+    drawing={pixels:{size,palette:palette.map(c=>c.toLowerCase()),cells,depth:!!data.drawing.pixels.depth}};
+  } else if (typeof data.drawing?.typed==='string') {
     const typed=data.drawing.typed.trim().toLowerCase();if(!typed||typed.length>32)throw new Error('add your signature.');drawing={typed};
   } else {
     const strokes=data.drawing?.strokes;
@@ -30,6 +35,7 @@ export default {
   const origin=request.headers.get('Origin');const url=new URL(request.url);
   if(origin&&!ALLOWED.has(origin))return response({error:'this guestbook lives on rusetiq.dev.'},403,null);
   if(request.method==='OPTIONS')return new Response(null,{status:204,headers:{'Access-Control-Allow-Origin':origin||'https://rusetiq.dev','Access-Control-Allow-Methods':'GET, POST, DELETE, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Access-Control-Max-Age':'86400','Vary':'Origin'}});
+  if(['/repos','/readme','/github-day'].includes(url.pathname)){try{return await githubData(request,origin,ctx)}catch{return response({error:'github is unavailable. try again soon.'},503,origin)}}
   if(url.pathname==='/contributions') {
    try{return await getContributions(request,origin,ctx)}catch{return response({error:'github is taking a breather. try again soon.'},503,origin)}
   }
