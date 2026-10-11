@@ -21,9 +21,7 @@ document.addEventListener('pointerdown',initAudio,{capture:true});document.addEv
 
 
 // Preferences and the local profile clock.
-let theme='dark';try{theme=localStorage.getItem('rusetiq-theme')||theme}catch{}
-function applyTheme(){document.documentElement.dataset.theme=theme;$('#theme').setAttribute('aria-label',`Switch to ${theme==='dark'?'light':'dark'} mode`);$('#theme').title=theme==='dark'?'Light mode':'Dark mode'}
-applyTheme();$('#theme').onclick=()=>{theme=theme==='dark'?'light':'dark';try{localStorage.setItem('rusetiq-theme',theme)}catch{}applyTheme();drawSky(performance.now())};
+const theme='dark';document.documentElement.dataset.theme='dark';
 function updateLocalTime(){$('#local-time').textContent=new Intl.DateTimeFormat('en',{timeZone:'Asia/Dubai',hour:'numeric',minute:'2-digit',hour12:true}).format(new Date()).toLowerCase()+' GST';$('#local-time').dateTime=new Date().toISOString()}
 updateLocalTime();setInterval(updateLocalTime,1000);
 const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
@@ -59,7 +57,7 @@ function resumeSky(){if(skyVisible&&!document.hidden&&!reducedMotion.matches&&!s
 function resizeSky(){const rect=canvas.getBoundingClientRect();skyWidth=rect.width;skyHeight=rect.height;const dpr=Math.min(devicePixelRatio||1,2);canvas.width=skyWidth*dpr;canvas.height=skyHeight*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);drawSky(performance.now())}
 new ResizeObserver(resizeSky).observe(canvas);new IntersectionObserver(([e])=>{skyVisible=e.isIntersecting;if(!skyVisible&&skyFrame){cancelAnimationFrame(skyFrame);skyFrame=0}resumeSky()}).observe(canvas);document.addEventListener('visibilitychange',()=>{if(document.hidden&&skyFrame){cancelAnimationFrame(skyFrame);skyFrame=0}else resumeSky()});reducedMotion.addEventListener('change',()=>{if(skyFrame){cancelAnimationFrame(skyFrame);skyFrame=0}resumeSky()});
 canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();pointer={x:e.clientX-r.left,y:e.clientY-r.top}});canvas.addEventListener('pointerleave',()=>pointer=null);
-function leaveStar(x,y){const safeY=Math.max(20,Math.min(y,skyHeight*.66));savedStars.push({x:Math.max(.04,Math.min(x/skyWidth,.96)),y:safeY/skyHeight});savedStars=savedStars.slice(-24);try{localStorage.setItem('rusetiq-stars',JSON.stringify(savedStars))}catch{}if(!reducedMotion.matches)bursts.push({x,y:safeY,time:performance.now()});drawSky(performance.now());playSound('click');$('#scene-hint').textContent='a star of your own. ✦'}
+function leaveStar(x,y){const safeY=Math.max(20,Math.min(y,skyHeight*.66));savedStars.push({x:Math.max(.04,Math.min(x/skyWidth,.96)),y:safeY/skyHeight});savedStars=savedStars.slice(-24);try{localStorage.setItem('rusetiq-stars',JSON.stringify(savedStars))}catch{}if(!reducedMotion.matches)bursts.push({x,y:safeY,time:performance.now()});drawSky(performance.now());playSound('click')}
 canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect();leaveStar(e.clientX-r.left,e.clientY-r.top)});canvas.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();leaveStar(skyWidth*(.15+Math.random()*.65),skyHeight*(.15+Math.random()*.4))}});resizeSky();resumeSky();
 
 // Native dialog, with familiar keyboard shortcuts and real destinations.
