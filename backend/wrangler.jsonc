@@ -1,0 +1,14 @@
+{
+  "name": "rusetiq-guestbook",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-11",
+  "account_id": "ef9d8674583500d44ec5fd99dd074a29",
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "rusetiq-guestbook",
+      "database_id": "41533a04-07a5-44b6-8723-0bb51305882f"
+    }
+  ]
+}
