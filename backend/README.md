@@ -1,4 +1,4 @@
-# portfolio guestbook
+# portfolio backend
 
 The public guestbook runs separately from GitHub Pages at:
 
@@ -7,6 +7,12 @@ https://rusetiq-guestbook.aarush-uae.workers.dev/entries
 A dedicated Cloudflare Worker stores normalized handwriting strokes and short notes in D1. There are no browser credentials. The portfolio shows the latest six signatures, then loads more on request.
 
 Visitors can remove their own signature using a random receipt stored in their browser. Only its hash is stored server-side. Public input is bounded, rendered as text and SVG coordinates, and limited to six entries per day and one entry per minute for each salted network identifier. `RATE_SECRET` is a Worker secret; do not put it in source files.
+
+## github activity
+
+`GET /contributions` reads the public GitHub calendar for `rusetiq`, pairs each day with its exact tooltip count, and caches it at the edge for an hour. The total is the sum of the displayed days. It needs no GitHub credentials. If GitHub is unavailable or changes its markup, the frontend shows a retry and a profile link instead of fabricated activity.
+
+The calendar supports touch inspection and keyboard navigation: arrow keys move between days or weeks, and home/end move to the first/latest day.
 
 ## local development
 
@@ -20,7 +26,7 @@ Serve `dist/` on localhost port 4173 in another terminal. The portfolio uses the
 ## checks and publishing
 
 ```sh
-node --test backend/worker.test.mjs
+node --test backend/*.test.mjs
 npx wrangler deploy --config backend/wrangler.jsonc
 ```
 

@@ -88,7 +88,7 @@ canvas.addEventListener('click',e=>{const b=canvas.getBoundingClientRect();drop(
 })();
 
 // Native dialog, with familiar keyboard shortcuts and real destinations.
-const destinations=[{name:'Home',href:'#top',type:'Sections'},{name:'Work',href:'#work',type:'Sections'},{name:'Here & elsewhere',href:'#time',type:'Sections'},{name:'About',href:'#about',type:'Sections'},{name:'Connect',href:'#connect',type:'Sections'},{name:'Guestbook',href:'#guestbook',type:'Sections'},...Array.from(document.querySelectorAll('.project')).map(a=>({name:a.querySelector('h3').childNodes[0].textContent.trim(),href:a.href,type:'Projects'}))];
+const destinations=[{name:'Home',href:'#top',type:'Sections'},{name:'Work',href:'#work',type:'Sections'},{name:'Here & elsewhere',href:'#time',type:'Sections'},{name:'About',href:'#about',type:'Sections'},{name:'GitHub activity',href:'#activity',type:'Sections'},{name:'Connect',href:'#connect',type:'Sections'},{name:'Guestbook',href:'#guestbook',type:'Sections'},...Array.from(document.querySelectorAll('.project')).map(a=>({name:a.querySelector('h3').childNodes[0].textContent.trim(),href:a.href,type:'Projects'}))];
 const jumpDialog=$('#jump-dialog'),search=$('#jump-search');let visibleCommands=[],commandIndex=0;
 function drawCommands(){const term=search.value.trim().toLowerCase();visibleCommands=destinations.filter(d=>d.name.toLowerCase().includes(term));commandIndex=0;const root=$('#jump-results');root.replaceChildren();let category='';visibleCommands.forEach((d,i)=>{if(d.type!==category){category=d.type;const label=document.createElement('div');label.className='command-category';label.textContent=category;root.append(label)}const a=document.createElement('a');a.href=d.href;a.className='command-item'+(i===0?' selected':'');const name=document.createElement('strong');name.style.fontWeight='400';name.textContent=d.name;const hint=document.createElement('span');hint.textContent=d.type==='Projects'?'open ↗':'jump ↵';a.append(name,hint);if(d.type==='Projects'){a.target='_blank';a.rel='noopener noreferrer'}a.onclick=()=>jumpDialog.close();root.append(a)});if(!visibleCommands.length){const empty=document.createElement('p');empty.className='no-results';empty.textContent='No matches. Try a project or section.';root.append(empty)}}
 function openJump(){drawCommands();jumpDialog.showModal();search.focus()}
@@ -97,7 +97,8 @@ document.addEventListener('keydown',e=>{const typing=e.target.closest('input,tex
 jumpDialog.addEventListener('close',()=>search.value='');jumpDialog.addEventListener('click',e=>{if(e.target===jumpDialog){const r=jumpDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)jumpDialog.close()}});
 
 // A public signature wall. Stroke data is bounded and rendered as safe SVG paths.
-const GUEST_API=['127.0.0.1','localhost'].includes(location.hostname)?'http://127.0.0.1:8787/entries':'https://rusetiq-guestbook.aarush-uae.workers.dev/entries';
+const PORTFOLIO_API=['127.0.0.1','localhost'].includes(location.hostname)?'http://127.0.0.1:8787':'https://rusetiq-guestbook.aarush-uae.workers.dev';
+const GUEST_API=PORTFOLIO_API+'/entries';
 const signDialog=$('#sign-dialog'),signCanvas=$('#signature-pad'),pen=signCanvas.getContext('2d');let strokes=[],activeStroke=null,ink='#e0dfd5',typedMode=false,wallEntries=[],wallTotal=0,wallNext=null,wallLoading=false,owned={};
 try{const data=JSON.parse(localStorage.getItem('rusetiq-owned-signatures')||'{}');if(data&&typeof data==='object')owned=data}catch{}
 function signaturePath(stroke){if(!stroke.length)return '';const p=stroke.map(([x,y])=>[x*540,y*180]);if(p.length===1)return `M ${p[0][0]} ${p[0][1]} l .1 .1`;let d=`M ${p[0][0].toFixed(2)} ${p[0][1].toFixed(2)}`;for(let i=1;i<p.length-1;i++){d+=` Q ${p[i][0].toFixed(2)} ${p[i][1].toFixed(2)} ${((p[i][0]+p[i+1][0])/2).toFixed(2)} ${((p[i][1]+p[i+1][1])/2).toFixed(2)}`}d+=` L ${p.at(-1)[0].toFixed(2)} ${p.at(-1)[1].toFixed(2)}`;return d}
@@ -123,3 +124,46 @@ async function loadWall(reset=true){if(wallLoading)return;wallLoading=true;$('#g
 $('#guest-more').onclick=()=>loadWall(false);
 $('#sign-form').onsubmit=async e=>{e.preventDefault();const submit=$('#signature-submit');if(submit.disabled)return;submit.disabled=true;submit.textContent='leaving your mark...';$('#sign-error').textContent='';try{const result=await guestRequest('POST',{name:$('#sign-name').value,message:$('#sign-message').value,website:$('#sign-website').value,ink,drawing:typedMode?{typed:$('#typed-signature').value}:{strokes}});owned[result.entry.id]=result.deleteToken;saveOwnership();wallEntries.unshift(result.entry);wallTotal++;if(wallNext!==null)wallNext++;renderWall(result.entry.id);strokes=[];$('#sign-form').reset();$('#message-count').textContent='0 / 120';signDialog.close();drawSignature();toast('you were here. ✦');if(!reducedMotion.matches){const card=$('.signature-card');card.querySelectorAll('path').forEach((p,i)=>{const length=p.getTotalLength();p.animate([{strokeDasharray:length,strokeDashoffset:length},{strokeDasharray:length,strokeDashoffset:0}],{duration:800,delay:i*90,easing:'ease-out',fill:'backwards'})})}}catch(error){$('#sign-error').textContent=error.message}finally{submit.innerHTML='sign the guestbook <span>↗</span>';updateSigningState()}};
 loadWall();
+// A live, read-only calendar from the public GitHub profile, cached by our Worker.
+(function(){
+  const calendar=$('#contribution-calendar'),total=$('#contribution-total'),detail=$('#contribution-detail');
+  const idle='hover or tap a day to see what happened.';
+  async function loadCalendar(){
+    calendar.setAttribute('aria-busy','true');
+    try{
+      const response=await fetch(PORTFOLIO_API+'/contributions',{signal:AbortSignal.timeout(12000)});
+      if(!response.ok)throw new Error('github unavailable');
+      const data=await response.json();if(!Array.isArray(data.days)||!data.days.length)throw new Error('missing calendar');
+      const offset=new Date(data.days[0].date+'T12:00:00Z').getUTCDay(),weeks=Math.ceil((offset+data.days.length)/7);
+      const chart=document.createElement('div');chart.className='contribution-chart';
+      const weekdays=document.createElement('div');weekdays.className='calendar-weekdays';weekdays.setAttribute('aria-hidden','true');
+      ['','mon','','wed','','fri',''].forEach(text=>{const day=document.createElement('span');day.textContent=text;weekdays.append(day)});
+      const scroller=document.createElement('div');scroller.className='calendar-scroll';
+      const inner=document.createElement('div');inner.className='calendar-inner';inner.style.setProperty('--weeks',weeks);
+      const months=document.createElement('div');months.className='calendar-months';months.setAttribute('aria-hidden','true');
+      const grid=document.createElement('div');grid.className='calendar-grid';grid.setAttribute('role','grid');grid.setAttribute('aria-label','daily github contributions for the past 12 months');grid.setAttribute('aria-rowcount','7');grid.setAttribute('aria-colcount',String(weeks));
+      const rows=Array.from({length:7},(_,i)=>{const row=document.createElement('div');row.className='calendar-row';row.setAttribute('role','row');row.setAttribute('aria-rowindex',String(i+1));grid.append(row);return row});
+      const cells=[];let lastMonth=-1;
+      data.days.forEach((day,index)=>{
+        const date=new Date(day.date+'T12:00:00Z'),column=Math.floor((offset+index)/7),row=(offset+index)%7;
+        if(date.getUTCMonth()!==lastMonth){lastMonth=date.getUTCMonth();if(column<weeks-2){const label=document.createElement('span');label.textContent=new Intl.DateTimeFormat('en',{month:'short',timeZone:'UTC'}).format(date);label.style.gridColumn=column+1;months.append(label)}}
+        const cell=document.createElement('button');cell.type='button';cell.className='heat-cell';cell.dataset.level=Math.min(4,Math.max(0,day.level));cell.dataset.date=day.date;cell.dataset.count=day.count;cell.style.gridColumn=column+1;cell.style.gridRow=row+1;cell.setAttribute('role','gridcell');cell.setAttribute('aria-colindex',String(column+1));cell.tabIndex=index===data.days.length-1?0:-1;
+        const label=`${day.count===0?'no':day.count.toLocaleString('en')} ${day.count===1?'contribution':'contributions'} on ${new Intl.DateTimeFormat('en',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}).format(date).toLowerCase()}`;
+        cell.setAttribute('aria-label',label);cell.title=label;
+        const describe=()=>{detail.textContent=label;cells.forEach(c=>c.classList.toggle('is-inspected',c===cell))};
+        cell.addEventListener('pointerenter',describe);cell.addEventListener('focus',describe);cell.addEventListener('click',()=>{cells.forEach(c=>c.tabIndex=c===cell?0:-1);describe()});
+        cell.addEventListener('keydown',event=>{const steps={ArrowLeft:-7,ArrowRight:7,ArrowUp:-1,ArrowDown:1};let next=event.key==='Home'?0:event.key==='End'?data.days.length-1:index+(steps[event.key]??0);if(!(event.key in steps)&&!['Home','End'].includes(event.key))return;event.preventDefault();next=Math.max(0,Math.min(data.days.length-1,next));cells.forEach((c,i)=>c.tabIndex=i===next?0:-1);cells[next].focus();cells[next].scrollIntoView({block:'nearest',inline:'nearest'})});
+        rows[row].append(cell);cells.push(cell);
+      });
+      inner.append(months,grid);scroller.append(inner);chart.append(weekdays,scroller);calendar.replaceChildren(chart);
+      total.textContent=data.total.toLocaleString('en')+' contributions';detail.textContent=idle;
+      requestAnimationFrame(()=>scroller.scrollLeft=scroller.scrollWidth-scroller.clientWidth);
+      if(!reducedMotion.matches)cells.forEach((cell,i)=>cell.animate([{opacity:0,transform:'scale(.5)'},{opacity:1,transform:'scale(1)'}],{duration:350,delay:Math.floor((offset+i)/7)*9,easing:'ease-out',fill:'backwards'}));
+      updateProgress();
+    }catch{
+      total.textContent='@rusetiq';const message=document.createElement('p');message.className='calendar-error';message.textContent='github is taking a breather. ';
+      const retry=document.createElement('button');retry.textContent='try again';retry.onclick=()=>{retry.disabled=true;loadCalendar()};message.append(retry);calendar.replaceChildren(message);detail.textContent='you can always find the full calendar on github.';
+    }finally{calendar.setAttribute('aria-busy','false')}
+  }
+  loadCalendar();
+})();

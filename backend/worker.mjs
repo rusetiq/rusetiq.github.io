@@ -1,4 +1,5 @@
 const ALLOWED = new Set(['https://rusetiq.dev','https://www.rusetiq.dev','https://rusetiq.github.io','https://quiet-portfolio-1010.rusetiq.chatgpt.site','http://127.0.0.1:4173','http://localhost:4173']);
+import {getContributions} from './contributions.mjs';
 const INKS = new Set(['#e0dfd5','#b6c5a5','#c9b88d']);
 const encoder = new TextEncoder();
 async function hash(value) { return [...new Uint8Array(await crypto.subtle.digest('SHA-256',encoder.encode(value)))].map(x=>x.toString(16).padStart(2,'0')).join(''); }
@@ -25,10 +26,13 @@ export function validateEntry(data) {
   return {name,message,drawing,ink:data.ink};
 }
 export default {
- async fetch(request,env) {
+ async fetch(request,env,ctx) {
   const origin=request.headers.get('Origin');const url=new URL(request.url);
   if(origin&&!ALLOWED.has(origin))return response({error:'this guestbook lives on rusetiq.dev.'},403,null);
   if(request.method==='OPTIONS')return new Response(null,{status:204,headers:{'Access-Control-Allow-Origin':origin||'https://rusetiq.dev','Access-Control-Allow-Methods':'GET, POST, DELETE, OPTIONS','Access-Control-Allow-Headers':'Content-Type','Access-Control-Max-Age':'86400','Vary':'Origin'}});
+  if(url.pathname==='/contributions') {
+   try{return await getContributions(request,origin,ctx)}catch{return response({error:'github is taking a breather. try again soon.'},503,origin)}
+  }
   if(url.pathname!=='/entries')return response({error:'not found.'},404,origin);
   try {
    if(request.method==='GET') {
