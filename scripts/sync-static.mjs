@@ -15,3 +15,5 @@ await mkdir(new URL('assets/',root),{recursive:true});for(const filename of awai
 console.log('Static files synchronized with content-versioned URLs.');
 
 await mkdir(new URL('data/',root),{recursive:true});for(const filename of await readdir(new URL('data/',dist)))await copyFile(new URL(`data/${filename}`,dist),new URL(`data/${filename}`,root));
+
+await mkdir(new URL('github/',root),{recursive:true});await copyFile(new URL('github/index.html',dist),new URL('github/index.html',root));
